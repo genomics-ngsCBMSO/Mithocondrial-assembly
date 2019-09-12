@@ -1,4 +1,5 @@
-# Mithocondrial-genome-assembly
+# Mitochondrial genome assembly
+
 
 ## INTRODUCTION
 
@@ -10,7 +11,8 @@ of kinetoplastids from DNA-sequencing data. It has been successfully tested on d
 
 This pipeline requires the following dependences: 
 
-* [Python2](https://www.python.org/downloads/)
+* [python2](https://www.python.org/downloads/)
+* [perl](https://www.perl.org/)
 * [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
 * [Samtools](http://samtools.sourceforge.net/)
 * [Bedtools](https://bedtools.readthedocs.io/en/latest/)
@@ -40,7 +42,7 @@ The downloaded folder contains  all the *in-house* additional scripts needed to 
 ## USAGE
 
 
-1. Alignment with Bowtie2
+### 1. Alignment with Bowtie2
 
 Each pair is aligned separately, using the following parameters:
 
@@ -57,7 +59,7 @@ This step will generate 2 files:
 
 
 
-2. Unaligned reads extraction
+### 2. Unaligned reads extraction
 
 The files generated in the previous step were used as inputs in order to extract unaligned reads with samtools,
 then, bedtools bamtofastq is used for extracting FASTQ records from sequence alignments in BAM format:
@@ -70,7 +72,7 @@ bedtools bamtofastq -i <alignment_forward.bam> -fq <alignedReads_forward.fastq>
 bedtools bamtofastq -i <alignment_reverse.bam> -fq <alignedReads_reverse.fastq>
 ```
 
-3. Quality filtering with Prinseq
+### 3. Quality filtering with Prinseq
 
 
 The unaligned reads in FASTQ format are filtered by quality with Prinseq, using the following parameters:
@@ -78,6 +80,7 @@ The unaligned reads in FASTQ format are filtered by quality with Prinseq, using 
 ```
 prinseq-lite.pl -fastq <alignedReads_forward.fastq> -trim_qual_right 25 -trim_qual_left 25 -trim_qual_type mean -trim_qual_window 5 -trim_qual_step 1  -trim_ns_left 1 -trim_ns_right 1 -ns_max_p 1 -ns_max_n 3 -min_qual_mean 25 -min_len 60 -out_good <clean_unal_forward.fastq> -out_bad <excluded_unal_forward.fastq>
 prinseq-lite.pl -fastq <alignedReads_reverse.fastq> -trim_qual_right 25 -trim_qual_left 25 -trim_qual_type mean -trim_qual_window 5 -trim_qual_step 1 -trim_ns_left 1 -trim_ns_right 1 -ns_max_p 1 -ns_max_n 3 -min_qual_mean 25 -min_len 60 -out_good <clean_unal_reverse.fastq> -out_bad <excluded_unal_reverse.fastq>
+
 ```
 
 This step will generate 4 files:
@@ -86,7 +89,7 @@ This step will generate 4 files:
 - excluded_unal_forward.fastq and excluded_unal_reverse.fastq: Forward and reverse excluded reads
 
 
-4. Re-paired reads
+### 4. Re-paired reads
 
 Then, the pairs are joined and the orphan reads are discarded with the *in-house* script rePaired.py
 
@@ -96,15 +99,15 @@ python rePaired.py <clean_unal_forward.fastq> <clean_unal_reverse.fastq>
 
 This step will generate 3 files:
 
-    - clean_unal_forward_paired.fastq: Forward paired reads
-    - clean_unal_reverse_paired.fastq: Reverse paired reads 
-    - clean_unal_forward_orphan.fastq: Orphan reads
+- clean_unal_forward_paired.fastq: Forward paired reads
+- clean_unal_reverse_paired.fastq: Reverse paired reads 
+- clean_unal_forward_orphan.fastq: Orphan reads
 
 
 At this point, it is advisable to run [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) in order to guarantee the quality of the reads. 
 
 
-5. Assembly with IDBA_UD
+### 5. Assembly with IDBA_UD
 
 
 * First, the reads are joined and the pairs intercalated with the script called interleave_fq2fa.py:
@@ -112,8 +115,8 @@ At this point, it is advisable to run [FastQC](https://www.bioinformatics.babrah
 
 The input files needed to run this script are:
 
-    - clean_unal_forward_paired.fastq: Forward paired reads
-    - clean_unal_reverse_paired.fastq: Reverse paired reads
+- clean_unal_forward_paired.fastq: Forward paired reads
+- clean_unal_reverse_paired.fastq: Reverse paired reads
 
     
 ```
@@ -170,20 +173,30 @@ This step will generate a renamed FASTA file:
 - clean_paired_interleaved_idba_renamed.fa
 
 
-6. Contig analysis
+### 6. Contig analysis
 
-The contigs are launched to the entire nucleotide NCBI database:
+The contigs are launched to the entire nucleotide NCBI database. Then, the best hit is obtained using blastDefaultBestHit_extract.py:
 
 
 ```
 blastn -query clean_paired_interleaved_idba_renamed.fa -db nt -num_threads 12 -out clean_paired_interleaved_idba_renamed.fa.blastn
+
+blastDefaultBestHit_extract.py -i clean_paired_interleaved_idba_renamed.fa.blastn
+
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -i BLAST    blast_file outfmt default
+
 ```
 
 
-From this search, the best hit is obtained using blastDefaultBestHit_extract.py
+From this point forward, and with the information of all previous steps, the characterization of minicircles and maxicicles can be performed in order to
+to try to circulate and find ORFs. In our study (see PAPER for more information), circularization was only performed for Minicircles and the ORFs were found in maxicicles contigs:
 
 
-6. Minicircles analysis
+### 6.1 Minicircles circularization
+
 
 The script minimusCircleFinder_v4.5.py is used in order to find circular contigs. This script use Minimus2 assembler internally. 
 
@@ -204,8 +217,7 @@ optional arguments:
 
 ```
 
-
-7. Maxicircle analysis
+### 6.2 Maxicircle ORF-Finder
 
 The possible ORFs of the maxicircle contigs are found using a script called leishORFinder_v1.py. The theoretical proteins are then analysed with blastp.
 
@@ -247,3 +259,6 @@ Current maintainers:
 ## ACKNOWLEDGMENTS
 
 * Agradecimientos del paper
+
+
+
