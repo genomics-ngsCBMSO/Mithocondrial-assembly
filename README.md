@@ -1,4 +1,4 @@
-# Mitochondrial genome assembly
+# Mitochondrial Assembly
 
 
 ## INTRODUCTION
