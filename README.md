@@ -258,11 +258,7 @@ Cite the paper
 
 ## ACKNOWLEDGMENTS
 
-**Funding:** This work was supported by grants (to B.A. and J.M.R.) from Proyecto del Ministerio de Economía, Industria y Competitividad SAF2017-86965-R, and by the Network of Tropical Diseases Research RICET (RD16/0027/0008); both grants are co-funded with FEDER funds. The CBMSO receives institutional grants from the Fundación Ramón Areces and from the Fundación Banco de Santander.
-
-**Acknowledgments:** We thank Laura Corvo for PCR validation of the L. major maxicircle assembly, and Jose Peinado and Araceli García-Mora for their participation in the initial steps of this study.
-
-**Conflicts of Interest:** The authors declare no conflict of interest. The funders had no role in the design of the study; in the collection, analyses, or interpretation of data; in the writing of the manuscript, or in the decision to publish the results.
+This work was supported by grants (to B.A. and J.M.R.) from Proyecto del Ministerio de Economía, Industria y Competitividad SAF2017-86965-R, and by the Network of Tropical Diseases Research RICET (RD16/0027/0008); both grants are co-funded with FEDER funds. The CBMSO receives institutional grants from the Fundación Ramón Areces and from the Fundación Banco de Santander.
 
 
 
