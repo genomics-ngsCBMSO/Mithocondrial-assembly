@@ -180,7 +180,9 @@ The contigs are launched to the entire nucleotide NCBI database. Then, the best 
 
 ```
 blastn -query clean_paired_interleaved_idba_renamed.fa -db nt -num_threads 12 -out clean_paired_interleaved_idba_renamed.fa.blastn
+```
 
+```
 blastDefaultBestHit_extract.py -i clean_paired_interleaved_idba_renamed.fa.blastn
 
 
