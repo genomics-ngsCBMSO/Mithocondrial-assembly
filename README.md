@@ -255,7 +255,7 @@ Current maintainers:
  
 ## CITE US
 
-Cite the paper
+Please cite our paper published in [Genes](https://www.mdpi.com/journal/genes): Camacho, E., Rastrojo, A., Sanchiz, Á., Fuente, S. G.-D. L., Aguado, B., & Requena, J. M. (2019). [Mitochondrial Genomes: Maxicircle Structure and Heterogeneity of Minicircles](https://www.mdpi.com/2073-4425/10/10/758Leishmania). Genes, 10(10), 758. doi: 10.3390/genes10100758 
 
 
 ## ACKNOWLEDGMENTS
