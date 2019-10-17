@@ -5,7 +5,7 @@
 
 This pipeline can be used in order to assembly the maxicircle and the minicircles
 of kinetoplastids from DNA-sequencing data. It has been successfully tested on different 
-*Leishmania* species: *L. major*, *L. infantum*, *L. braziliensis*, *L. adleri* and *L. guyanensis*. For more information see: PAPER
+*Leishmania* species: *L. major*, *L. infantum*, *L. braziliensis*, *L. adleri* and *L. guyanensis*.
 
 ## REQUIREMENTS
 
